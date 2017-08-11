@@ -1,0 +1,27 @@
+---
+#
+# install selenium-grid
+#
+
+- name: download jar file
+  get_url:
+    url: http://selenium-release.storage.googleapis.com/3.3/selenium-server-standalone-3.3.1.jar
+    dest: /var/tmp/
+
+- name: create seleniumgrid systemd start script
+  template:
+    src: seleniumgrid.service
+    dest: /lib/systemd/system/seleniumgrid.service
+    owner: root
+    group: root
+    mode: 644
+  notify: reload systemd
+
+- name: ensure seleniumgrid is started
+  systemd: name=seleniumgrid state=started enabled=yes
+
+#- name: run the grid
+#  shell: "nohup java -jar selenium-server-standalone-3.3.1.jar -role hub &"
+#  args:
+#    chdir: /var/tmp/
+  

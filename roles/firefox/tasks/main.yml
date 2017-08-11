@@ -1,0 +1,18 @@
+---
+#
+# install firefox
+#
+
+- name: install firefox
+  apt: name=firefox state=present
+
+- name: download geckodriver
+  get_url:
+    url: https://github.com/mozilla/geckodriver/releases/download/v0.15.0/geckodriver-v0.15.0-linux64.tar.gz
+    dest: /tmp/
+
+- name: untar the geckodriver
+  unarchive:
+    src: /tmp/geckodriver-v0.15.0-linux64.tar.gz
+    dest: /usr/local/bin/
+    remote_src: True

@@ -1,0 +1,11 @@
+[Unit]
+Description=seleniumgrid
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/java -jar /var/tmp/selenium-server-standalone-3.3.1.jar -role hub
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

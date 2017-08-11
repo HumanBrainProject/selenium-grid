@@ -1,0 +1,12 @@
+[Unit]
+Description=Xvfb
+After=network.target
+
+[Service]
+Type=simple
+Restart=on-abort
+ExecStart=/usr/bin/Xvfb :99 -ac -screen 0 1920x1080x16
+
+[Install]
+WantedBy=multi-user.target
+

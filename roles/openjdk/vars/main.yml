@@ -1,0 +1,8 @@
+---
+
+jdk_packages:
+  - openjdk-8-source
+  - openjdk-8-jdk
+  - openjdk-8-jdk-headless
+  - openjdk-8-jre
+  - openjdk-8-jre-headless

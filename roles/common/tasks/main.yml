@@ -1,0 +1,35 @@
+---
+
+#
+# disable ipv6
+#
+- sysctl: name=net.ipv6.conf.all.disable_ipv6 value=1 state=present  reload=no
+- sysctl: name=net.ipv6.conf.default.disable_ipv6 value=1 state=present  reload=no
+
+
+#
+# set vm.swappiness to 0  (avoid swapping)
+#
+- sysctl: name=vm.swappiness value=0 state=present sysctl_set=yes reload=yes
+
+
+- name: set timezone to Switzerland
+  timezone: name='Europe/Zurich'
+
+#
+# get hostname from metadata
+#
+- name: register hostname
+  command: "curl http://169.254.169.254/latest/meta-data/hostname"
+  register: meta_data_hostname
+  
+#
+# then update /etc/hosts
+#  and make sure there is a line with IP address hostname
+#
+- name: Build hosts file
+  lineinfile: dest=/etc/hosts regexp="^{{ ansible_default_ipv4.address }}.*$" line="{{ ansible_default_ipv4.address }} {{item}}" state=present
+  when: ansible_default_ipv4.address is defined
+  with_items: "{{ meta_data_hostname.stdout_lines[0].split('.')[0] }}.{{search_domain}} {{ meta_data_hostname.stdout_lines[0].split('.')[0] }}"
+
+

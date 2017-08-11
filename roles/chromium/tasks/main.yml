@@ -1,0 +1,22 @@
+---
+#
+# install chromium
+#
+
+- name: install chromium-browser
+  apt: name=chromium-browser state=present
+
+- name: install chromium-chromedriver
+  apt: name=chromium-chromedriver state=present
+
+- name: copy chromium-chromedriver to /usr/local/bin
+  command: cp /usr/lib/chromium-browser/chromedriver /usr/local/bin/chromedriver
+  
+- name: configure chromium-browser-default
+  copy: src=chromium-browser-default dest=/etc/chromium-browser/default
+
+- name: copy chrome_lib.conf to /etc/ld.so.conf.d
+  copy: src=chrome_lib.conf dest=/etc/ld.so.conf.d/
+
+- name: run ldconfig
+  command: ldconfig

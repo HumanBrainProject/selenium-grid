@@ -1,0 +1,10 @@
+---
+#
+# Handlers for systemd
+#
+
+- name: reload systemd
+  command: "{{ item }}"
+  with_items:
+    - systemctl daemon-reload
+    - systemctl reenable seleniumgrid.service

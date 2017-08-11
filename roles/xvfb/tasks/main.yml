@@ -1,0 +1,25 @@
+---
+#
+# install Xvfb (X virtual framebuffer)
+#
+
+- name: install xvfb
+  apt: name=xvfb state=present
+
+- name: create xvfb systemd start script
+  template:
+    src: xvfb.service
+    dest: /lib/systemd/system/xvfb.service
+    owner: root
+    group: root
+    mode: 644
+  notify: reload systemd
+
+
+- name: start xvfb
+  systemd: name=xvfb state=restarted enabled=yes
+
+
+- name: export DISPLAY
+  copy: src=setdisplay.sh  dest=/etc/profile.d/setdisplay.sh mode=0555
+

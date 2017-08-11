@@ -1,0 +1,13 @@
+[Unit]
+Description=seleniumnode
+Requires=xvfb.service
+After=xvfb.service
+
+[Service]
+Type=simple
+Restart=on-abort
+Environment=DISPLAY=:99
+ExecStart=/usr/bin/java -jar /var/tmp/selenium-server-standalone-3.3.1.jar -role node  -host {{ansible_default_ipv4.address}} -hub http://{{ hostvars[groups['selenium-grid'][0]].ansible_ens3.ipv4.address }}:4444/grid/register  -browser browserName=chrome,maxInstances=25 -maxSession 25
+
+[Install]
+WantedBy=multi-user.target

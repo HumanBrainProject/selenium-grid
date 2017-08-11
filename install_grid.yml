@@ -1,0 +1,46 @@
+---
+
+- hosts: selenium
+  remote_user: ubuntu
+  become: true
+  become_user: root
+
+#
+# make sure python is installed
+#
+  gather_facts: False
+  pre_tasks:
+    - name: Install python for Ansible
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+      changed_when: False
+    - setup: # aka gather_facts
+#
+# then run the normal roles
+#
+  roles:
+    - common
+    - openjdk
+
+
+- hosts: selenium-grid
+  remote_user: ubuntu
+  become: true
+  become_user: root
+  roles:
+    - selenium-grid
+
+
+- hosts: selenium-node
+  remote_user: ubuntu
+  become: true
+  become_user: root
+  roles:
+    - xvfb
+    - chromium
+    - firefox
+    - selenium-node
+
+
+
+
+    

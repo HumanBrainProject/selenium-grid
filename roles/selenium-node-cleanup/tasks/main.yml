@@ -1,0 +1,13 @@
+---
+
+- name: kill all chromedriver
+  command: killall chromedriver
+  ignore_errors: yes
+  
+- name: kill all chromium-browser
+  command: killall chromium-browser
+  ignore_errors: yes
+  
+- name: restart seleniumnode
+  systemd: name=seleniumnode state=restarted
+  ignore_errors: yes

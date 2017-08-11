@@ -1,0 +1,27 @@
+---
+#
+# install selenium node
+#
+
+#
+# selenium-server-standalone
+# 
+
+- name: download jar file
+  get_url:
+    url: http://selenium-release.storage.googleapis.com/3.3/selenium-server-standalone-3.3.1.jar
+    dest: /var/tmp/
+
+- name: create seleniumnode systemd start script
+  template:
+    src: seleniumnode.service
+    dest: /lib/systemd/system/seleniumnode.service
+    owner: root
+    group: root
+    mode: 644
+  notify: reload systemd
+
+
+- name: ensure seleniumnode is started
+  systemd: name=seleniumnode state=started enabled=yes
+
